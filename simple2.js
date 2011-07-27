@@ -107,7 +107,7 @@ ANIMATION.draw = function () {
 };
 
 ANIMATION.keyDown = function (event) {
-    console.log(event.which)
+    return (event.which)
 };
 
 ANIMATION.start = function () {
