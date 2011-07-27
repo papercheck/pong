@@ -12,6 +12,7 @@ function ball() {
 
     this.paddel = document.createElement('div');
     this.paddel.id = "paddel";
+    this.paddel.width = "180";
     this.paddel.style.left = "271px";
 
     this.container = document.getElementById('container');
@@ -33,6 +34,10 @@ function ball() {
         return parseInt(this.element.style.left);
     };
 
+    this.paddelWidth = function () {
+        return parseInt(this.paddel.width);
+    };
+
     this.leftPaddel = function () {
         return parseInt(this.paddel.style.left);
     };
@@ -44,11 +49,12 @@ function ball() {
     this.center = {'x' : (this.width() / 2) + this.left(),
                    'y' : (this.height() / 2) + this.top() };
 
-    this.paddleCenter = {'x' : (this.width() / 2) + this.left(),
-                         'y' : (this.height() / 2) + this.top() };
+    this.paddleCenter = {'x' : (this.width() / 2) + this.left()};
 
     this.directionX = 1;
     this.directionY = 1;
+    this.paddelMotion = 1;
+
     this.changeDirection = -1;
 
     this.draw = function (magnitude) {
@@ -63,12 +69,14 @@ function ball() {
         var vectorX = currentLeft + (magnitude * this.directionX);
         var vectorY = currentTop + (magnitude * this.directionY);
 
-        var vector = magnitude + this.directionX;
+        var vectorXP = paddleLeft + this.paddelMotion;
 
         this.center.x = vectorX + (this.width() / 2);
         this.center.y = vectorY + (this.height() / 2);
+        this.paddleCenter.x = vectorXP;
         this.element.style.left = vectorX + 'px';
         this.element.style.top = vectorY + 'px';
+        this.paddel.style.left = vectorXP + 'px';
 
         this.collisionDetect();
         this.paddelMove();
@@ -77,8 +85,6 @@ function ball() {
     this.collisionDetect = function () {
         var containerWidth = parseInt(this.container.width);
         var containerHeight = parseInt(this.container.height);
-
-
         var halfWidth = (this.width() / 2);
 
         if ((this.directionX * this.directionY) + this.changeDirection == 0) {
@@ -96,15 +102,23 @@ function ball() {
     },
 
     this.paddelMove = function () {
+         var containerWidth = parseInt(this.container.width);
+         var halfWidth = (this.paddelWidth());
+
         if (ANIMATION.keyDownPass == 37 && ANIMATION.keyUpPass != 37) {
-            console.log(ANIMATION.keyDownPass);
+            this.paddelMotion *= -1;
             if (ANIMATION.keyUpPass != null) {ANIMATION.keyUp.stopProp();}
             ANIMATION.keyDown.stopProp();
         }
+
         if (ANIMATION.keyDownPass == 39 && ANIMATION.keyUpPass != 39) {
-            console.log(ANIMATION.keyDownPass);
+            this.paddelMotion *= -1;
             if (ANIMATION.keyUpPass != null) {ANIMATION.keyUp.stopProp();}
             ANIMATION.keyDown.stopProp();
+        }
+
+        if (this.paddleCenter.x + halfWidth >= containerWidth || this.paddleCenter.x < 0) {
+            this.paddelMotion *= -1;
         }
     }
 }
