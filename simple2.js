@@ -53,7 +53,8 @@ function ball() {
 
     this.directionX = 1;
     this.directionY = 1;
-    this.paddelMotion = 1;
+    this.paddelRight = -1;
+    this.paddelLeft = 1;
 
     this.changeDirection = -1;
 
@@ -69,7 +70,7 @@ function ball() {
         var vectorX = currentLeft + (magnitude * this.directionX);
         var vectorY = currentTop + (magnitude * this.directionY);
 
-        var vectorXP = paddleLeft + this.paddelMotion;
+        var vectorXP = paddleLeft + this.paddelLeft + this.paddelRight;
 
         this.center.x = vectorX + (this.width() / 2);
         this.center.y = vectorY + (this.height() / 2);
@@ -86,6 +87,7 @@ function ball() {
         var containerWidth = parseInt(this.container.width);
         var containerHeight = parseInt(this.container.height);
         var halfWidth = (this.width() / 2);
+        var paddelWidth = (this.paddelWidth());
 
         if ((this.directionX * this.directionY) + this.changeDirection == 0) {
             this.changeDirection = this.changeDirection * -1;
@@ -99,27 +101,41 @@ function ball() {
         if (this.center.y + halfWidth >= containerHeight || this.center.y - halfWidth < 0) {
             this.directionY = this.directionY * -1;
         }
+
+        if (this.paddleCenter.x + paddelWidth + 1 >= containerWidth || this.paddleCenter.x - 1 < 0) {
+            this.paddelRight = -1;
+            this.paddelLeft = 1;
+        }
     },
 
     this.paddelMove = function () {
-         var containerWidth = parseInt(this.container.width);
-         var halfWidth = (this.paddelWidth());
-
-        if (ANIMATION.keyDownPass == 37 && ANIMATION.keyUpPass != 37) {
-            this.paddelMotion *= -1;
-            if (ANIMATION.keyUpPass != null) {ANIMATION.keyUp.stopProp();}
-            ANIMATION.keyDown.stopProp();
-        }
+         if (this.paddelRight == 0) {
+            this.paddelRight = -1;
+            this.paddelLeft = 1;
+         }
 
         if (ANIMATION.keyDownPass == 39 && ANIMATION.keyUpPass != 39) {
-            this.paddelMotion *= -1;
+            if (this.paddelLeft == -1) {
+                this.paddelLeft = 1;
+            }
+
+            this.paddelRight *= -1;
+
             if (ANIMATION.keyUpPass != null) {ANIMATION.keyUp.stopProp();}
             ANIMATION.keyDown.stopProp();
         }
 
-        if (this.paddleCenter.x + halfWidth >= containerWidth || this.paddleCenter.x < 0) {
-            this.paddelMotion *= -1;
+        if (ANIMATION.keyDownPass == 37 && ANIMATION.keyUpPass != 37) {
+            if (this.paddelRight == 1) {
+                this.paddelRight = -1;
+            }
+
+            this.paddelLeft *= -1;
+
+            if (ANIMATION.keyUpPass != null) {ANIMATION.keyUp.stopProp();}
+            ANIMATION.keyDown.stopProp();
         }
+
     }
 }
 
