@@ -63,6 +63,10 @@ function ball() {
         this.collisionDetect();
     };
 
+//    this.movePaddel = function () {
+//        console.log(ANIMATION.keyDown)
+//    };
+
     this.collisionDetect = function () {
         var containerWidth = parseInt(this.container.width);
         var containerHeight = parseInt(this.container.height);
@@ -103,7 +107,7 @@ ANIMATION.draw = function () {
 };
 
 ANIMATION.keyDown = function (event) {
-    return (event.keyCode)
+    console.log(event.which)
 };
 
 ANIMATION.start = function () {
