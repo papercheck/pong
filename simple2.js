@@ -59,13 +59,13 @@ function ball() {
         this.element.style.left = vectorX + 'px';
         this.element.style.top = vectorY + 'px';
 
-//        this.movePaddel();
+        this.movePaddel();
         this.collisionDetect();
     };
 
-//    this.movePaddel = function () {
-//        console.log(ANIMATION.keyDown)
-//    };
+    this.movePaddel = function () {
+        console.log(ANIMATION.key);
+    };
 
     this.collisionDetect = function () {
         var containerWidth = parseInt(this.container.width);
@@ -107,7 +107,7 @@ ANIMATION.draw = function () {
 };
 
 ANIMATION.keyDown = function (event) {
-    return (event.which)
+    ANIMATION.key = (event.which)
 };
 
 ANIMATION.start = function () {
