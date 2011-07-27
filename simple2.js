@@ -96,9 +96,9 @@ function ball() {
     },
 
     this.paddelMove = function () {
-        if (ANIMATION.keyDownPass == 37) {console.log(ANIMATION.keyDownPass);}
-        if (ANIMATION.keyDownPass == 39) {console.log(ANIMATION.keyDownPass);}
-//        console.log(ANIMATION.keyUpPass);
+        var clear = ANIMATION.keyUpPass;
+        if (ANIMATION.keyDownPass == 37 && clear !== 37) {console.log(ANIMATION.keyDownPass)}
+        if (ANIMATION.keyDownPass == 39 && clear !== 39) {console.log(ANIMATION.keyDownPass)}
     }
 }
 
@@ -126,7 +126,7 @@ ANIMATION.keyDown = function (event) {
 };
 
 ANIMATION.keyUp = function (event) {
-    ANIMATION.keyUpPass = (event)
+    ANIMATION.keyUpPass = (event.which)
 };
 
 ANIMATION.start = function () {
