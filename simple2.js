@@ -63,10 +63,6 @@ function ball() {
         this.collisionDetect();
     };
 
-//    this.movePaddel = function() {
-//      document.addEventListener("keypress", function(e) {return (e.which)});
-//    };
-
     this.collisionDetect = function () {
         var containerWidth = parseInt(this.container.width);
         var containerHeight = parseInt(this.container.height);
@@ -96,6 +92,7 @@ ANIMATION.startTime = null;
 ANIMATION.timer = null;
 ANIMATION.timerInterval = 1000 / 800;
 ANIMATION.magnitude = 1;
+ANIMATION.key = null;
 
 ANIMATION.currentTime = function () {
   return (new Date).getTime();
@@ -103,6 +100,10 @@ ANIMATION.currentTime = function () {
 
 ANIMATION.draw = function () {
    ANIMATION.ball.draw(ANIMATION.magnitude);
+};
+
+ANIMATION.keyDown = function (event) {
+    return (event.keyCode)
 };
 
 ANIMATION.start = function () {
