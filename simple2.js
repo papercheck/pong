@@ -33,12 +33,19 @@ function ball() {
         return parseInt(this.element.style.left);
     };
 
+    this.leftPaddel = function () {
+        return parseInt(this.paddel.style.left);
+    };
+
     this.top = function () {
         return parseInt(this.element.style.top);
     };
 
     this.center = {'x' : (this.width() / 2) + this.left(),
                    'y' : (this.height() / 2) + this.top() };
+
+    this.paddleCenter = {'x' : (this.width() / 2) + this.left(),
+                         'y' : (this.height() / 2) + this.top() };
 
     this.directionX = 1;
     this.directionY = 1;
@@ -47,24 +54,24 @@ function ball() {
     this.draw = function (magnitude) {
         var currentLeft = this.left();
         var currentTop = this.top();
+        var paddleLeft = this.leftPaddel();
 
         if (isNaN(currentLeft)) { currentLeft = 0}
+        if (isNaN(paddleLeft)) { paddleLeft = 271}
         if (isNaN(currentTop)) { currentTop = 0}
 
         var vectorX = currentLeft + (magnitude * this.directionX);
         var vectorY = currentTop + (magnitude * this.directionY);
+
+        var vector = magnitude + this.directionX;
 
         this.center.x = vectorX + (this.width() / 2);
         this.center.y = vectorY + (this.height() / 2);
         this.element.style.left = vectorX + 'px';
         this.element.style.top = vectorY + 'px';
 
-        this.movePaddel();
         this.collisionDetect();
-    };
-
-    this.movePaddel = function () {
-        console.log(ANIMATION.key);
+        this.paddelMove();
     };
 
     this.collisionDetect = function () {
@@ -86,8 +93,15 @@ function ball() {
         if (this.center.y + halfWidth >= containerHeight || this.center.y - halfWidth < 0) {
             this.directionY = this.directionY * -1;
         }
+    },
+
+    this.paddelMove = function () {
+        if (ANIMATION.keyDownPass == 37) {console.log(ANIMATION.keyDownPass);}
+        if (ANIMATION.keyDownPass == 39) {console.log(ANIMATION.keyDownPass);}
+//        console.log(ANIMATION.keyUpPass);
     }
 }
+
 
 ANIMATION = {};
 
@@ -96,7 +110,8 @@ ANIMATION.startTime = null;
 ANIMATION.timer = null;
 ANIMATION.timerInterval = 1000 / 800;
 ANIMATION.magnitude = 1;
-ANIMATION.key = null;
+ANIMATION.keyDownPass = null;
+ANIMATION.keyUpPass = null;
 
 ANIMATION.currentTime = function () {
   return (new Date).getTime();
@@ -107,7 +122,11 @@ ANIMATION.draw = function () {
 };
 
 ANIMATION.keyDown = function (event) {
-    ANIMATION.key = (event.which)
+    ANIMATION.keyDownPass = (event.which)
+};
+
+ANIMATION.keyUp = function (event) {
+    ANIMATION.keyUpPass = (event)
 };
 
 ANIMATION.start = function () {
