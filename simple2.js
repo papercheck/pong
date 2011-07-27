@@ -96,9 +96,16 @@ function ball() {
     },
 
     this.paddelMove = function () {
-        var clear = ANIMATION.keyUpPass;
-        if (ANIMATION.keyDownPass == 37 && clear !== 37) {console.log(ANIMATION.keyDownPass)}
-        if (ANIMATION.keyDownPass == 39 && clear !== 39) {console.log(ANIMATION.keyDownPass)}
+        if (ANIMATION.keyDownPass == 37 && ANIMATION.keyUpPass != 37) {
+            console.log(ANIMATION.keyDownPass);
+            if (ANIMATION.keyUpPass != null) {ANIMATION.keyUp.stopProp();}
+            ANIMATION.keyDown.stopProp();
+        }
+        if (ANIMATION.keyDownPass == 39 && ANIMATION.keyUpPass != 39) {
+            console.log(ANIMATION.keyDownPass);
+            if (ANIMATION.keyUpPass != null) {ANIMATION.keyUp.stopProp();}
+            ANIMATION.keyDown.stopProp();
+        }
     }
 }
 
@@ -122,11 +129,17 @@ ANIMATION.draw = function () {
 };
 
 ANIMATION.keyDown = function (event) {
-    ANIMATION.keyDownPass = (event.which)
+    ANIMATION.keyDownPass = (event.which);
+    ANIMATION.keyDown.stopProp = function () {
+    ANIMATION.keyDownPass = null;
+    }
 };
 
 ANIMATION.keyUp = function (event) {
-    ANIMATION.keyUpPass = (event.which)
+    ANIMATION.keyUpPass = (event.which);
+    ANIMATION.keyUp.stopProp = function () {
+        ANIMATION.keyUpPass = null;
+    }
 };
 
 ANIMATION.start = function () {
