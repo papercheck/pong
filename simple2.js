@@ -49,7 +49,7 @@ function ball() {
     this.center = {'x' : (this.width() / 2) + this.left(),
                    'y' : (this.height() / 2) + this.top() };
 
-    this.paddleCenter = {'x' : (this.width() / 2) + this.left()};
+    this.paddelCenter = {'x' : (this.paddelWidth) / 2 + this.leftPaddel};
 
     this.directionX = 1;
     this.directionY = 1;
@@ -61,20 +61,20 @@ function ball() {
     this.draw = function (magnitude) {
         var currentLeft = this.left();
         var currentTop = this.top();
-        var paddleLeft = this.leftPaddel();
+        var paddelLeft = this.leftPaddel();
 
         if (isNaN(currentLeft)) { currentLeft = 0}
-        if (isNaN(paddleLeft)) { paddleLeft = 271}
+        if (isNaN(paddelLeft)) { paddelLeft = 271}
         if (isNaN(currentTop)) { currentTop = 0}
 
         var vectorX = currentLeft + (magnitude * this.directionX);
         var vectorY = currentTop + (magnitude * this.directionY);
 
-        var vectorXP = paddleLeft + this.paddelLeft + this.paddelRight;
+        var vectorXP = paddelLeft + this.paddelLeft + this.paddelRight;
 
         this.center.x = vectorX + (this.width() / 2);
         this.center.y = vectorY + (this.height() / 2);
-        this.paddleCenter.x = vectorXP;
+        this.paddelCenter.x = vectorXP;
         this.element.style.left = vectorX + 'px';
         this.element.style.top = vectorY + 'px';
         this.paddel.style.left = vectorXP + 'px';
@@ -102,9 +102,9 @@ function ball() {
             this.directionY = this.directionY * -1;
         }
 
-        if (this.paddleCenter.x + paddelWidth + 1 >= containerWidth || this.paddleCenter.x - 1 < 0) {
-            this.paddelRight = -1;
-            this.paddelLeft = 1;
+        if (this.paddelCenter.x + paddelWidth + 1 >= containerWidth || this.paddelCenter.x - 1 < 0) {
+            this.paddelRight = 0;
+            this.paddelLeft = 0;
         }
     },
 
@@ -161,7 +161,7 @@ ANIMATION.draw = function () {
 ANIMATION.keyDown = function (event) {
     ANIMATION.keyDownPass = (event.which);
     ANIMATION.keyDown.stopProp = function () {
-    ANIMATION.keyDownPass = null;
+        ANIMATION.keyDownPass = null;
     }
 };
 
