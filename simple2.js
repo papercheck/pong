@@ -159,7 +159,7 @@ function ball() {
             this.directionY = this.directionY * -1;
         }
 
-//        //bounce off the bricks
+        //bounce off the bricks
         if(this.center.x <= this.brickCenter.x + brickWidth && this.center.x > this.brickCenter.x &&
              this.center.y + halfWidth >= this.brickCenter.y && this.center.y -halfWidth <= this.brickCenter.y + brickHeight) {
            if (this.brick.getAttribute("class") == "brick") {
