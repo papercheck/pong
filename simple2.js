@@ -13,7 +13,9 @@ function ball() {
     this.paddel = document.createElement('div');
     this.paddel.id = "paddel";
     this.paddel.width = "180";
+    this.paddel.height = "20";
     this.paddel.style.left = "271px";
+    this.paddel.style.top = "480px";
 
     this.container = document.getElementById('container');
     this.container.width = "800";
@@ -38,6 +40,10 @@ function ball() {
         return parseInt(this.paddel.width);
     };
 
+    this.paddelHeight = function () {
+        return parseInt(this.paddel.height);
+    };
+
     this.leftPaddel = function () {
         return parseInt(this.paddel.style.left);
     };
@@ -49,7 +55,8 @@ function ball() {
     this.center = {'x' : (this.width() / 2) + this.left(),
                    'y' : (this.height() / 2) + this.top() };
 
-    this.paddelCenter = {'x' : (this.paddelWidth) / 2 + this.leftPaddel};
+    this.paddelCenter = {'x' : (this.paddelWidth) + this.leftPaddel,
+                         'y' : (this.paddelHeight)};
 
     this.directionX = 1;
     this.directionY = 1;
@@ -74,7 +81,8 @@ function ball() {
 
         this.center.x = vectorX + (this.width() / 2);
         this.center.y = vectorY + (this.height() / 2);
-        this.paddelCenter.x = vectorXP;
+        this.paddelCenter.x = vectorXP + 1;
+        this.paddelCenter.y = this.paddelHeight();
         this.element.style.left = vectorX + 'px';
         this.element.style.top = vectorY + 'px';
         this.paddel.style.left = vectorXP + 'px';
@@ -85,6 +93,7 @@ function ball() {
 
     this.collisionDetect = function () {
         var containerWidth = parseInt(this.container.width);
+        var containerWidthP = parseInt(this.container.width);
         var containerHeight = parseInt(this.container.height);
         var halfWidth = (this.width() / 2);
         var paddelWidth = (this.paddelWidth());
@@ -98,11 +107,21 @@ function ball() {
             this.directionX = this.directionX * -1;
         }
 
-        if (this.center.y + halfWidth >= containerHeight || this.center.y - halfWidth < 0) {
+        if (this.center.y - halfWidth < 0) {
             this.directionY = this.directionY * -1;
         }
 
-        if (this.paddelCenter.x + paddelWidth + 1 >= containerWidth || this.paddelCenter.x - 1 < 0) {
+        if (this.center.y + halfWidth >= containerHeight) {
+            this.directionX = 0;
+            this.directionY = 0;
+        }
+
+        if(containerHeight - this.center.y - halfWidth == this.paddelCenter.y && this.center.x + paddelWidth >= paddelWidth + this.paddelCenter.x) {
+            this.directionY = this.directionY * -1;
+        }
+
+
+        if (this.paddelCenter.x + paddelWidth + 1 >= containerWidthP || this.paddelCenter.x - 1 < 0) {
             this.paddelRight = 0;
             this.paddelLeft = 0;
         }
@@ -121,8 +140,8 @@ function ball() {
 
             this.paddelRight *= -1;
 
-            if (ANIMATION.keyUpPass != null) {ANIMATION.keyUp.stopProp();}
             ANIMATION.keyDown.stopProp();
+            if (ANIMATION.keyUpPass != null) {ANIMATION.keyUp.stopProp();}
         }
 
         if (ANIMATION.keyDownPass == 37 && ANIMATION.keyUpPass != 37) {
@@ -132,8 +151,8 @@ function ball() {
 
             this.paddelLeft *= -1;
 
-            if (ANIMATION.keyUpPass != null) {ANIMATION.keyUp.stopProp();}
             ANIMATION.keyDown.stopProp();
+            if (ANIMATION.keyUpPass != null) {ANIMATION.keyUp.stopProp();}
         }
 
     }
