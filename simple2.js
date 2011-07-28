@@ -22,6 +22,7 @@ function ball() {
     this.brick.width = "50";
     this.brick.height = "20";
     this.brick.style.left = "300px";
+    this.brick.style.top = "20px";
 
     this.container = document.getElementById('container');
     this.container.width = "800";
@@ -59,7 +60,7 @@ function ball() {
         return parseInt(this.element.style.top);
     };
 
-    this.brickHeight = function (){
+    this.brickHeightDist = function (){
         return parseInt(this.brick.style.top)
     };
 
@@ -68,7 +69,11 @@ function ball() {
     };
 
     this.brickWidth = function (){
-        return parseInt(this.brick.style.width)
+        return parseInt(this.brick.width)
+    };
+
+    this.brickHeight = function (){
+        return parseInt(this.brick.height)
     };
 
     this.center = {'x' : (this.width() / 2) + this.left(),
@@ -90,7 +95,8 @@ function ball() {
         var currentLeft = this.left();
         var currentTop = this.top();
         var paddelLeft = this.leftPaddel();
-        
+        var brickLeft = this.brickLeft();
+        var brickHeightDist = (this.brickHeightDist());
 
         if (isNaN(currentLeft)) { currentLeft = 0}
         if (isNaN(paddelLeft)) { paddelLeft = 300}
@@ -104,6 +110,8 @@ function ball() {
         this.center.y = vectorY + (this.height() / 2);
         this.paddelCenter.x = vectorXP + 2;
         this.paddelCenter.y = this.paddelHeight();
+        this.brickCenter.x = brickLeft;
+        this.brickCenter.y = brickHeightDist;
         this.element.style.left = vectorX + 'px';
         this.element.style.top = vectorY + 'px';
         this.paddel.style.left = vectorXP + 'px';
@@ -120,6 +128,7 @@ function ball() {
         var halfWidth = (this.width() / 2);
         var brickWidth = (this.brickWidth());
         var brickHeight = (this.brickHeight());
+
 
         //ping audio
         if ((this.directionX * this.directionY) + this.changeDirection == 0) {
@@ -149,9 +158,12 @@ function ball() {
         }
 
 //        //bounce off the bricks
-//        if(containerHeight - brickHeight - this.center.y - halfWidth == this.brickCenter.y && this.center.x + brickWidth >= brickWidth + this.brickCenter.x) {
-//            console.log("off bricks");
-//        }
+        if(this.center.x <= this.brickCenter.x + brickWidth && this.center.x >= this.brickCenter.x && this.center.y  >= this.brickCenter.y  && this.center.y < this.brickCenter.y) {
+            this.directionY = this.directionY * -1;
+            console.log("ball-center: "+this.center.y);
+            console.log("brick-top: "+this.brickCenter.y);
+            console.log("ball-height: "+halfWidth);
+        }
 
         //contains the paddel inside the container
         if (this.paddelCenter.x + paddelWidth + 1 >= containerWidthP || this.paddelCenter.x - 1 < 0) {
