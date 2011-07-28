@@ -22,7 +22,7 @@ function ball() {
     this.brick.width = "50";
     this.brick.height = "20";
     this.brick.style.left = "300px";
-    this.brick.style.top = "20px";
+    this.brick.style.top = "30px";
 
     this.container = document.getElementById('container');
     this.container.width = "800";
@@ -153,16 +153,19 @@ function ball() {
         }
 
         //bounce off the paddel
-        if(this.center.x <= this.paddelCenter.x + paddelWidth && this.center.x >= this.paddelCenter.x && containerHeight - this.center.y - halfWidth == this.paddelCenter.y) {
+        if(this.center.x <= this.paddelCenter.x + paddelWidth && this.center.x >= this.paddelCenter.x &&
+           containerHeight - this.center.y - halfWidth == this.paddelCenter.y) {
+
             this.directionY = this.directionY * -1;
         }
 
 //        //bounce off the bricks
-        if(this.center.x <= this.brickCenter.x + brickWidth && this.center.x >= this.brickCenter.x && this.center.y  >= this.brickCenter.y  && this.center.y < this.brickCenter.y) {
-            this.directionY = this.directionY * -1;
-            console.log("ball-center: "+this.center.y);
-            console.log("brick-top: "+this.brickCenter.y);
-            console.log("ball-height: "+halfWidth);
+        if(this.center.x <= this.brickCenter.x + brickWidth && this.center.x > this.brickCenter.x &&
+             this.center.y + halfWidth >= this.brickCenter.y && this.center.y -halfWidth <= this.brickCenter.y + brickHeight) {
+           if (this.brick.getAttribute("class") == "brick") {
+               this.brick.setAttribute("class","brick-gone"),
+               this.directionY *= -1;
+           }
         }
 
         //contains the paddel inside the container
