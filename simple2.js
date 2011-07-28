@@ -90,6 +90,7 @@ function ball() {
         var currentLeft = this.left();
         var currentTop = this.top();
         var paddelLeft = this.leftPaddel();
+        
 
         if (isNaN(currentLeft)) { currentLeft = 0}
         if (isNaN(paddelLeft)) { paddelLeft = 300}
@@ -101,7 +102,7 @@ function ball() {
 
         this.center.x = vectorX + (this.width() / 2);
         this.center.y = vectorY + (this.height() / 2);
-        this.paddelCenter.x = vectorXP + 1;
+        this.paddelCenter.x = vectorXP + 2;
         this.paddelCenter.y = this.paddelHeight();
         this.element.style.left = vectorX + 'px';
         this.element.style.top = vectorY + 'px';
@@ -114,7 +115,6 @@ function ball() {
     this.collisionDetect = function () {
         var containerWidth = parseInt(this.container.width);
         var paddelWidth = (this.paddelWidth());
-        var realXcenter = containerWidth - this.paddelCenter.x -1;
         var containerWidthP = parseInt(this.container.width);
         var containerHeight = parseInt(this.container.height);
         var halfWidth = (this.width() / 2);
@@ -144,17 +144,9 @@ function ball() {
         }
 
         //bounce off the paddel
-        if(containerHeight - this.center.y - halfWidth == this.paddelCenter.y && containerWidth - (this.center.x + paddelWidth) <= realXcenter) {
+        if(this.center.x <= this.paddelCenter.x + paddelWidth && this.center.x >= this.paddelCenter.x && containerHeight - this.center.y - halfWidth == this.paddelCenter.y) {
             this.directionY = this.directionY * -1;
-            console.log("adjusted: "+(realXcenter));
-            console.log("adjusted center: "+(containerWidth - (this.center.x + paddelWidth)));
-            console.log("paddel center: "+(this.paddelCenter.x));
-            console.log("container width: "+(containerWidth));
         }
-//        else {
-//            console.log("side 1: "+(this.center.x));
-//            console.log("side 2: "+(this.paddelCenter.x));
-//        }
 
 //        //bounce off the bricks
 //        if(containerHeight - brickHeight - this.center.y - halfWidth == this.brickCenter.y && this.center.x + brickWidth >= brickWidth + this.brickCenter.x) {
