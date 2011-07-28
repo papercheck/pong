@@ -37,18 +37,27 @@
                 height: 20px;
                 top:0;
                 left:0;
-                background-color: red;
+                background-color: yellow;
                 border-radius: 50px;
             }
 
             div#paddel {
                 background: black;
-                display: block;
-                position: relative;
+                position: absolute;
                 width:180px;
                 height: 20px;
                 top: 480px;
-                border: none;
+                overflow-x: hidden;
+            }
+
+            div.brick {
+                background: red;
+                display: block;
+                position: absolute;
+                width: 50px;
+                height: 20px;
+                top: 20px;
+                border: 1px white solid;
             }
         </style>
         
