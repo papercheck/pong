@@ -1,0 +1,75 @@
+<!DOCTYPE html SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title></title>
+        
+        <style type="text/css">
+            body {
+                margin: 0;
+            }
+            
+            embed {
+                width: 0;
+                height: 0;
+            }
+            
+            div#container {
+                width: 800px;
+                height: 500px;
+                background-color: gray;
+            }
+            
+            div#fps {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                height: 50px;
+                background-color: black;
+                color: white;
+                font-size: 18px;
+                line-height: 50px;
+                padding-left: 10px;
+            }
+            
+            div#ball {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                top:0;
+                left:0;
+                background-color: yellow;
+                border-radius: 50px;
+            }
+
+            div#paddel {
+                background: black;
+                position: absolute;
+                width:180px;
+                height: 20px;
+                top: 480px;
+                overflow-x: hidden;
+            }
+
+            div.brick {
+                background: red;
+                display: block;
+                position: absolute;
+                width: 50px;
+                height: 20px;
+                top: 20px;
+                border: 1px white solid;
+            }
+        </style>
+        
+        <script type="text/javascript" src="simple2.js"></script>
+        
+        <script type="text/javascript">
+            window.onload = function () { ANIMATION.start() };
+            document.addEventListener("keydown",ANIMATION.keyDown,false);
+            document.addEventListener("keyup",ANIMATION.keyUp,false);
+        </script>
+    </head>
+    <body>
+        <div id="container"></div>
+    </body>
+</html>
