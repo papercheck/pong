@@ -113,11 +113,11 @@ function ball() {
 
     this.collisionDetect = function () {
         var containerWidth = parseInt(this.container.width);
-        var realXcenter = this.center.x * -1 + containerWidth;
+        var paddelWidth = (this.paddelWidth());
+        var realXcenter = containerWidth - this.paddelCenter.x -1;
         var containerWidthP = parseInt(this.container.width);
         var containerHeight = parseInt(this.container.height);
         var halfWidth = (this.width() / 2);
-        var paddelWidth = (this.paddelWidth());
         var brickWidth = (this.brickWidth());
         var brickHeight = (this.brickHeight());
 
@@ -144,10 +144,12 @@ function ball() {
         }
 
         //bounce off the paddel
-        if(containerHeight - this.center.y - halfWidth == this.paddelCenter.y && realXcenter + paddelWidth <= paddelWidth + this.paddelCenter.x) {
+        if(containerHeight - this.center.y - halfWidth == this.paddelCenter.y && containerWidth - (this.center.x + paddelWidth) <= realXcenter) {
             this.directionY = this.directionY * -1;
-            console.log("side 1: "+(realXcenter));
-            console.log("side 2: "+(this.paddelCenter.x));
+            console.log("adjusted: "+(realXcenter));
+            console.log("adjusted center: "+(containerWidth - (this.center.x + paddelWidth)));
+            console.log("paddel center: "+(this.paddelCenter.x));
+            console.log("container width: "+(containerWidth));
         }
 //        else {
 //            console.log("side 1: "+(this.center.x));
