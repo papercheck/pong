@@ -5,7 +5,7 @@ function ball() {
     this.element.width = "20";
     this.element.height = "20";
     this.element.style.left = "10px";
-    this.element.style.top = "10px";
+    this.element.style.top = "60px";
 
     this.audio = document.createElement('audio');
     this.audio.setAttribute('src', 'pong.mp3');
@@ -17,20 +17,37 @@ function ball() {
     this.paddel.style.left = "300px";
     this.paddel.style.top = "480px";
 
-    this.brick = document.createElement('div');
-    this.brick.className = "brick";
-    this.brick.width = "50";
-    this.brick.height = "20";
-    this.brick.style.left = "300px";
-    this.brick.style.top = "30px";
-
     this.container = document.getElementById('container');
     this.container.width = "800";
     this.container.height = "500";
     this.container.appendChild(this.element);
     this.container.appendChild(this.audio);
     this.container.appendChild(this.paddel);
-    this.container.appendChild(this.brick);
+    var i;
+    this.brickLeft = [];
+    for (i = 750; i >= 0; i -= 50) {
+        this.brick = document.createElement('div');
+        this.brick.id = (i / 50) + 1;
+        this.brick.className = "brick";
+        this.brick.width = "50";
+        this.brick.height = "20";
+        this.brick.style.left = i + "px";
+        this.brick.style.top = "30px";
+        this.brickLeft.push(i);
+        this.container.appendChild(this.brick);
+    }
+
+    this.brickHeightDist = function (){
+        return parseInt(this.brick.style.top)
+    };
+
+    this.brickWidth = function (){
+        return parseInt(this.brick.width)
+    };
+
+    this.brickHeight = function (){
+        return parseInt(this.brick.height)
+    };
 
     this.width = function () {
         return parseInt(this.element.width);
@@ -60,30 +77,11 @@ function ball() {
         return parseInt(this.element.style.top);
     };
 
-    this.brickHeightDist = function (){
-        return parseInt(this.brick.style.top)
-    };
-
-    this.brickLeft = function (){
-        return parseInt(this.brick.style.left)
-    };
-
-    this.brickWidth = function (){
-        return parseInt(this.brick.width)
-    };
-
-    this.brickHeight = function (){
-        return parseInt(this.brick.height)
-    };
-
     this.center = {'x' : (this.width() / 2) + this.left(),
                    'y' : (this.height() / 2) + this.top() };
 
     this.paddelCenter = {'x' : (this.paddelWidth) + this.leftPaddel,
                          'y' : (this.paddelHeight)};
-
-    this.brickCenter = {'x' : (this.brickWidth()) + this.brickLeft,
-                        'y' : (this.brickHeight())};
 
     this.directionX = 1;
     this.directionY = 1;
@@ -95,8 +93,6 @@ function ball() {
         var currentLeft = this.left();
         var currentTop = this.top();
         var paddelLeft = this.leftPaddel();
-        var brickLeft = this.brickLeft();
-        var brickHeightDist = (this.brickHeightDist());
 
         if (isNaN(currentLeft)) { currentLeft = 0}
         if (isNaN(paddelLeft)) { paddelLeft = 300}
@@ -110,9 +106,8 @@ function ball() {
         this.center.y = vectorY + (this.height() / 2);
         this.paddelCenter.x = vectorXP + 2;
         this.paddelCenter.y = this.paddelHeight();
-        this.brickCenter.x = brickLeft;
-        this.brickCenter.y = brickHeightDist;
         this.element.style.left = vectorX + 'px';
+//        console.log(this.element.style.left);
         this.element.style.top = vectorY + 'px';
         this.paddel.style.left = vectorXP + 'px';
 
@@ -128,7 +123,7 @@ function ball() {
         var halfWidth = (this.width() / 2);
         var brickWidth = (this.brickWidth());
         var brickHeight = (this.brickHeight());
-
+        var brickHeightDist = (this.brickHeightDist());
 
         //ping audio
         if ((this.directionX * this.directionY) + this.changeDirection == 0) {
@@ -158,15 +153,17 @@ function ball() {
 
             this.directionY = this.directionY * -1;
         }
-
+        
         //bounce off the bricks
-        if(this.center.x <= this.brickCenter.x + brickWidth && this.center.x > this.brickCenter.x &&
-             this.center.y + halfWidth >= this.brickCenter.y && this.center.y -halfWidth <= this.brickCenter.y + brickHeight) {
-           if (this.brick.getAttribute("class") == "brick") {
-               this.brick.setAttribute("class","brick-gone"),
-               this.directionY *= -1;
-           }
+        if(this.center.x/brickWidth <= brickWidth && brickHeightDist == this.center.y + halfWidth ||
+            this.center.y - halfWidth <= (brickHeightDist + brickHeight)) {
+            this.currentBrick = document.getElementById(Math.round(this.center.x/brickWidth));
+            if (this.currentBrick.getAttribute("class") == "brick") {
+                    this.currentBrick.setAttribute("class","brick-gone"),
+                   this.directionY *= -1;
+            }
         }
+
 
         //contains the paddel inside the container
         if (this.paddelCenter.x + paddelWidth + 1 >= containerWidthP || this.paddelCenter.x - 1 < 0) {
